@@ -18,10 +18,11 @@ app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
 // Microsoft Graph — Azure AD App Registration
-const GRAPH_TENANT_ID = process.env.GRAPH_TENANT_ID || '46a82ce8-787c-4948-8f35-dd04c9135ae8';
-const GRAPH_CLIENT_ID = process.env.GRAPH_CLIENT_ID || 'a8d2b0fe-484f-4030-b434-0555e634394f';
-const GRAPH_CLIENT_SECRET = process.env.GRAPH_CLIENT_SECRET || 'fAW8Q~WPXvIlC3WRm444NiWb_2kfdUn7-Wccoag-';
+const GRAPH_TENANT_ID = process.env.GRAPH_TENANT_ID;
+const GRAPH_CLIENT_ID = process.env.GRAPH_CLIENT_ID;
+const GRAPH_CLIENT_SECRET = process.env.GRAPH_CLIENT_SECRET;
 const SEND_FROM_EMAIL = process.env.SEND_FROM_EMAIL || 'birthday@coltonessig.com';
+const FORWARD_TO_EMAIL = process.env.FORWARD_TO_EMAIL || '';
 
 // Initialize Graph client
 let graphClient = null;
@@ -197,6 +198,65 @@ app.post('/api/send-invite', async (req, res) => {
     res.status(500).json({ error: 'Failed to send email' });
   }
 });
+
+// ============================================
+// EMAIL FORWARDING: Poll birthday inbox → forward to personal email
+// ============================================
+let lastCheckedTime = new Date().toISOString();
+
+async function checkAndForwardEmails() {
+  if (!graphClient || !FORWARD_TO_EMAIL) return;
+
+  try {
+    const result = await graphClient
+      .api(`/users/${SEND_FROM_EMAIL}/messages`)
+      .filter(`receivedDateTime ge ${lastCheckedTime} and isDraft eq false`)
+      .select('id,subject,body,from,receivedDateTime')
+      .orderby('receivedDateTime desc')
+      .top(25)
+      .get();
+
+    if (!result.value || result.value.length === 0) return;
+
+    lastCheckedTime = new Date().toISOString();
+
+    for (const msg of result.value) {
+      // Skip emails we sent ourselves (outgoing invitations)
+      if (msg.from?.emailAddress?.address?.toLowerCase() === SEND_FROM_EMAIL.toLowerCase()) continue;
+
+      const fwdSubject = `[FWD from ${SEND_FROM_EMAIL}] ${msg.subject || '(no subject)'}`;
+      const fwdBody = `<p><strong>From:</strong> ${msg.from?.emailAddress?.name || ''} &lt;${msg.from?.emailAddress?.address || 'unknown'}&gt;<br>`
+        + `<strong>To:</strong> ${SEND_FROM_EMAIL}<br>`
+        + `<strong>Date:</strong> ${msg.receivedDateTime}</p><hr>${msg.body?.content || ''}`;
+
+      await graphClient.api(`/users/${SEND_FROM_EMAIL}/sendMail`).post({
+        message: {
+          subject: fwdSubject,
+          body: { contentType: 'HTML', content: fwdBody },
+          toRecipients: [{ emailAddress: { address: FORWARD_TO_EMAIL } }],
+        },
+        saveToSentItems: false,
+      });
+
+      // Mark as read
+      await graphClient.api(`/users/${SEND_FROM_EMAIL}/messages/${msg.id}`).patch({
+        isRead: true,
+      });
+
+      console.log(`[forward] Forwarded "${msg.subject}" from ${msg.from?.emailAddress?.address} → ${FORWARD_TO_EMAIL}`);
+    }
+  } catch (err) {
+    console.error('[forward] Error checking inbox:', err.message || err);
+  }
+}
+
+// Poll every 2 minutes
+if (graphClient && FORWARD_TO_EMAIL) {
+  console.log(`[forward] Forwarding ${SEND_FROM_EMAIL} inbox → ${FORWARD_TO_EMAIL} (every 2 min)`);
+  setInterval(checkAndForwardEmails, 2 * 60 * 1000);
+  // Initial check after 10 seconds
+  setTimeout(checkAndForwardEmails, 10_000);
+}
 
 // ============================================
 // SERVE STATIC FRONTEND (production build)
