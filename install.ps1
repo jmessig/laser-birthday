@@ -96,18 +96,20 @@ FORWARD_TO_EMAIL=jason.m.essig@gmail.com
 }
 
 # --- Start or restart with PM2 ---
-$pm2Status = & pm2 describe laser-birthday 2>$null
+$ErrorActionPreference = "Continue"
+$null = & pm2 describe laser-birthday 2>&1
 if ($LASTEXITCODE -eq 0) {
     Write-Host "[INFO] Restarting laser-birthday..." -ForegroundColor Yellow
-    & pm2 restart laser-birthday
+    & pm2 restart laser-birthday 2>&1 | Out-Host
 } else {
     Write-Host "[INFO] Starting laser-birthday on port $Port..." -ForegroundColor Yellow
     Push-Location $InstallDir
-    & pm2 start server.js --name laser-birthday --node-args="--env-file=.env"
+    & pm2 start server.js --name laser-birthday --node-args="--env-file=.env" 2>&1 | Out-Host
     Pop-Location
 }
 
-& pm2 save
+& pm2 save 2>&1 | Out-Host
+$ErrorActionPreference = "Stop"
 
 Write-Host ""
 Write-Host "==========================================" -ForegroundColor Green
