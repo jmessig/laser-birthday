@@ -1,0 +1,7 @@
+{
+  "guests": [
+    { "firstName": "Colton", "lastName": "Essig" },
+    { "firstName": "Example", "lastName": "Guest" }
+  ],
+  "_comment": "Add all invited guests here. First/last name matching is case-insensitive."
+}

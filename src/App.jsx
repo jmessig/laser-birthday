@@ -1,121 +1,133 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useCallback, useRef } from 'react';
+import { initAudio, setMuted } from './audio';
+import ParticleOverlay from './components/ParticleOverlay';
+import TitleScreen from './components/TitleScreen';
+import MissionHub from './components/MissionHub';
+import TargetPractice from './components/TargetPractice';
+import CodeCracker from './components/CodeCracker';
+import LaserMaze from './components/LaserMaze';
+import InvitationReveal from './components/InvitationReveal';
 
-function App() {
-  const [count, setCount] = useState(0)
+/*
+  SCREENS:
+  'title'       — Title screen with agent name input
+  'hub'         — Mission select HQ
+  'mission1'    — Target Practice
+  'mission2'    — Code Cracker
+  'mission3'    — Laser Maze
+  'invitation'  — Final invitation reveal
+*/
+
+export default function App() {
+  const [screen, setScreen] = useState('title');
+  const [agentName, setAgentName] = useState('');
+  const [missions, setMissions] = useState([false, false, false]); // completed flags
+  const [muted, setMutedState] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
+  const audioInitRef = useRef(false);
+
+  const ensureAudio = useCallback(() => {
+    if (!audioInitRef.current) {
+      initAudio();
+      audioInitRef.current = true;
+    }
+  }, []);
+
+  const navigateTo = useCallback((target) => {
+    setTransitioning(true);
+    setTimeout(() => {
+      setScreen(target);
+      setTransitioning(false);
+    }, 300);
+  }, []);
+
+  const completeMission = useCallback((index) => {
+    setMissions(prev => {
+      const next = [...prev];
+      next[index] = true;
+      return next;
+    });
+    navigateTo('hub');
+  }, [navigateTo]);
+
+  const toggleMute = useCallback(() => {
+    setMutedState(prev => {
+      const next = !prev;
+      setMuted(next);
+      return next;
+    });
+  }, []);
+
+  const handleStart = useCallback((name) => {
+    ensureAudio();
+    setAgentName(name || 'Agent');
+    navigateTo('hub');
+  }, [ensureAudio, navigateTo]);
+
+  const handleSkipToInvite = useCallback(() => {
+    ensureAudio();
+    setAgentName(agentName || 'Agent');
+    navigateTo('invitation');
+  }, [ensureAudio, agentName, navigateTo]);
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      {/* Global particle overlay */}
+      <ParticleOverlay />
 
-      <div className="ticks"></div>
+      {/* Mute button */}
+      <button className="mute-btn" onClick={toggleMute} title={muted ? 'Unmute' : 'Mute'}>
+        {muted ? '\u{1F507}' : '\u{1F50A}'}
+      </button>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {/* Screen transition overlay */}
+      {transitioning && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          background: '#0a0a1a',
+          zIndex: 998,
+          animation: 'fadeInUp 0.3s ease-out',
+        }} />
+      )}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+      {/* Screens */}
+      {screen === 'title' && (
+        <TitleScreen
+          onStart={handleStart}
+          onSkip={handleSkipToInvite}
+          ensureAudio={ensureAudio}
+        />
+      )}
+      {screen === 'hub' && (
+        <MissionHub
+          missions={missions}
+          agentName={agentName}
+          onSelectMission={(i) => navigateTo(`mission${i + 1}`)}
+          onDecrypt={() => navigateTo('invitation')}
+        />
+      )}
+      {screen === 'mission1' && (
+        <TargetPractice
+          onComplete={() => completeMission(0)}
+          onBack={() => navigateTo('hub')}
+        />
+      )}
+      {screen === 'mission2' && (
+        <CodeCracker
+          onComplete={() => completeMission(1)}
+          onBack={() => navigateTo('hub')}
+        />
+      )}
+      {screen === 'mission3' && (
+        <LaserMaze
+          onComplete={() => completeMission(2)}
+          onBack={() => navigateTo('hub')}
+        />
+      )}
+      {screen === 'invitation' && (
+        <InvitationReveal agentName={agentName} />
+      )}
     </>
-  )
+  );
 }
-
-export default App

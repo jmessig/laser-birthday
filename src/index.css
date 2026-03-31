@@ -1,111 +1,405 @@
+/* ============================================
+   GOOGLE FONTS
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&family=Press+Start+2P&display=swap');
+
+/* ============================================
+   CSS CUSTOM PROPERTIES
+   ============================================ */
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --bg-deep: #0a0a1a;
+  --bg-dark: #0d0d24;
+  --neon-green: #39FF14;
+  --electric-cyan: #00FFFF;
+  --hot-magenta: #FF00FF;
+  --laser-red: #FF073A;
+  --electric-purple: #BF00FF;
+  --warm-gold: #FFD700;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-arcade: 'Press Start 2P', monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --glow-green: 0 0 10px #39FF14, 0 0 20px #39FF14, 0 0 40px #39FF1488;
+  --glow-cyan: 0 0 10px #00FFFF, 0 0 20px #00FFFF, 0 0 40px #00FFFF88;
+  --glow-magenta: 0 0 10px #FF00FF, 0 0 20px #FF00FF, 0 0 40px #FF00FF88;
+  --glow-red: 0 0 10px #FF073A, 0 0 20px #FF073A, 0 0 40px #FF073A88;
+  --glow-purple: 0 0 10px #BF00FF, 0 0 20px #BF00FF, 0 0 40px #BF00FF88;
+  --glow-gold: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 40px #FFD70088;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ============================================
+   TYPOGRAPHY — NEON GLOW DEFAULTS
+   ============================================ */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.text-glow-green { text-shadow: var(--glow-green); color: var(--neon-green); }
+.text-glow-cyan { text-shadow: var(--glow-cyan); color: var(--electric-cyan); }
+.text-glow-magenta { text-shadow: var(--glow-magenta); color: var(--hot-magenta); }
+.text-glow-red { text-shadow: var(--glow-red); color: var(--laser-red); }
+.text-glow-purple { text-shadow: var(--glow-purple); color: var(--electric-purple); }
+.text-glow-gold { text-shadow: var(--glow-gold); color: var(--warm-gold); }
+
+.font-arcade {
+  font-family: var(--font-arcade);
+}
+
+/* ============================================
+   RESPONSIVE FONT SIZING
+   ============================================ */
+.title-xl { font-size: clamp(1.5rem, 5vw, 3.5rem); }
+.title-lg { font-size: clamp(1.2rem, 4vw, 2.5rem); }
+.title-md { font-size: clamp(1rem, 3vw, 1.8rem); }
+.text-lg  { font-size: clamp(0.9rem, 2.5vw, 1.3rem); }
+.text-md  { font-size: clamp(0.8rem, 2vw, 1.1rem); }
+.text-sm  { font-size: clamp(0.65rem, 1.5vw, 0.85rem); }
+
+/* ============================================
+   CSS KEYFRAME ANIMATIONS
+   ============================================ */
+
+/* 1. Neon pulse — glow brighter/dimmer */
+@keyframes neonPulse {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: 0.85; filter: brightness(1.3); }
+}
+
+/* 2. Float — gentle vertical bobbing */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* 3. Slide-ins */
+@keyframes slideInFromLeft {
+  from { transform: translateX(-60px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideInFromRight {
+  from { transform: translateX(60px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideInFromBottom {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* 4. Fade in up */
+@keyframes fadeInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* 5. Scale in with bounce */
+@keyframes scaleIn {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* 6. Shake — screen shake on impact */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10% { transform: translateX(-8px) translateY(2px); }
+  20% { transform: translateX(6px) translateY(-3px); }
+  30% { transform: translateX(-4px) translateY(1px); }
+  40% { transform: translateX(3px) translateY(-1px); }
+  50% { transform: translateX(-2px); }
+  60% { transform: translateX(1px); }
+}
+
+/* 7. Glitch — clip-path flicker */
+@keyframes glitch {
+  0%, 100% { transform: translate(0); filter: none; }
+  20% { transform: translate(-2px, 1px); filter: hue-rotate(90deg); }
+  40% { transform: translate(2px, -1px); filter: hue-rotate(-90deg); }
+  60% { transform: translate(-1px, -1px); filter: hue-rotate(45deg); }
+  80% { transform: translate(1px, 2px); filter: hue-rotate(-45deg); }
+}
+
+/* 8. Rotate 360 */
+@keyframes rotate360 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 9. Gradient shift */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 10. Typewriter */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* 11. Confetti fall */
+@keyframes confettiFall {
+  0% { transform: translateY(-10%) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0.5; }
+}
+
+/* 12. Scanline */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+/* 13. Flicker — for damaged screen effect */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  5% { opacity: 0.4; }
+  10% { opacity: 1; }
+  15% { opacity: 0.7; }
+  20% { opacity: 1; }
+  55% { opacity: 1; }
+  57% { opacity: 0.3; }
+  60% { opacity: 1; }
+}
+
+/* 14. Rainbow glow cycling */
+@keyframes rainbowGlow {
+  0%   { text-shadow: 0 0 10px #39FF14, 0 0 20px #39FF14, 0 0 40px #39FF14; color: #39FF14; }
+  16%  { text-shadow: 0 0 10px #00FFFF, 0 0 20px #00FFFF, 0 0 40px #00FFFF; color: #00FFFF; }
+  33%  { text-shadow: 0 0 10px #BF00FF, 0 0 20px #BF00FF, 0 0 40px #BF00FF; color: #BF00FF; }
+  50%  { text-shadow: 0 0 10px #FF00FF, 0 0 20px #FF00FF, 0 0 40px #FF00FF; color: #FF00FF; }
+  66%  { text-shadow: 0 0 10px #FF073A, 0 0 20px #FF073A, 0 0 40px #FF073A; color: #FF073A; }
+  83%  { text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 40px #FFD700; color: #FFD700; }
+  100% { text-shadow: 0 0 10px #39FF14, 0 0 20px #39FF14, 0 0 40px #39FF14; color: #39FF14; }
+}
+
+/* 15. Pulse scale */
+@keyframes pulseScale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* 16. Border glow cycle */
+@keyframes borderGlowCycle {
+  0%   { box-shadow: 0 0 15px #39FF14, 0 0 30px #39FF1466, inset 0 0 15px #39FF1433; border-color: #39FF14; }
+  25%  { box-shadow: 0 0 15px #00FFFF, 0 0 30px #00FFFF66, inset 0 0 15px #00FFFF33; border-color: #00FFFF; }
+  50%  { box-shadow: 0 0 15px #FF00FF, 0 0 30px #FF00FF66, inset 0 0 15px #FF00FF33; border-color: #FF00FF; }
+  75%  { box-shadow: 0 0 15px #BF00FF, 0 0 30px #BF00FF66, inset 0 0 15px #BF00FF33; border-color: #BF00FF; }
+  100% { box-shadow: 0 0 15px #39FF14, 0 0 30px #39FF1466, inset 0 0 15px #39FF1433; border-color: #39FF14; }
+}
+
+/* 17. Stamp slam */
+@keyframes stampSlam {
+  0% { transform: scale(3) rotate(-15deg); opacity: 0; }
+  60% { transform: scale(1) rotate(0deg); opacity: 1; }
+  70% { transform: scale(1.1) rotate(1deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* ============================================
+   UTILITY ANIMATION CLASSES
+   ============================================ */
+.anim-neon-pulse { animation: neonPulse 2s ease-in-out infinite; }
+.anim-float { animation: float 3s ease-in-out infinite; }
+.anim-shake { animation: shake 0.5s ease-in-out; }
+.anim-glitch { animation: glitch 0.3s ease-in-out; }
+.anim-rotate { animation: rotate360 2s linear infinite; }
+.anim-rainbow { animation: rainbowGlow 4s linear infinite; }
+.anim-pulse-scale { animation: pulseScale 2s ease-in-out infinite; }
+.anim-flicker { animation: flicker 3s linear infinite; }
+.anim-border-cycle { animation: borderGlowCycle 4s linear infinite; }
+
+.anim-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
+.anim-scale-in {
+  animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+}
+.anim-slide-in-left {
+  animation: slideInFromLeft 0.5s ease-out forwards;
+  opacity: 0;
+}
+.anim-slide-in-right {
+  animation: slideInFromRight 0.5s ease-out forwards;
+  opacity: 0;
+}
+.anim-slide-in-bottom {
+  animation: slideInFromBottom 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+/* Stagger delays */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+.delay-7 { animation-delay: 0.7s; }
+.delay-8 { animation-delay: 0.8s; }
+.delay-9 { animation-delay: 0.9s; }
+.delay-10 { animation-delay: 1.0s; }
+
+/* ============================================
+   PERSPECTIVE GRID FLOOR
+   ============================================ */
+.grid-floor {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  perspective: 300px;
+}
+.grid-floor::before {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  left: -50%;
+  right: -50%;
+  height: 100%;
+  background:
+    linear-gradient(transparent 0%, transparent 48%, #39FF1418 49%, #39FF1418 51%, transparent 52%, transparent 100%),
+    linear-gradient(90deg, transparent 0%, transparent 48%, #39FF1418 49%, #39FF1418 51%, transparent 52%, transparent 100%);
+  background-size: 60px 60px;
+  transform: rotateX(60deg);
+  transform-origin: center top;
+  animation: gridScroll 4s linear infinite;
+}
+@keyframes gridScroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 60px; }
+}
+
+/* ============================================
+   BUTTON BASE STYLES
+   ============================================ */
+.btn-neon {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+  padding: 14px 32px;
+  border: 2px solid var(--neon-green);
+  background: transparent;
+  color: var(--neon-green);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: var(--glow-green);
+  text-shadow: var(--glow-green);
+}
+.btn-neon:hover {
+  background: #39FF1420;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #39FF14, 0 0 40px #39FF14, 0 0 60px #39FF1488;
+}
+.btn-neon:active {
+  transform: scale(0.98);
+}
+
+.btn-neon-cyan {
+  border-color: var(--electric-cyan);
+  color: var(--electric-cyan);
+  box-shadow: var(--glow-cyan);
+  text-shadow: var(--glow-cyan);
+}
+.btn-neon-cyan:hover {
+  background: #00FFFF20;
+  box-shadow: 0 0 20px #00FFFF, 0 0 40px #00FFFF, 0 0 60px #00FFFF88;
+}
+
+.btn-neon-magenta {
+  border-color: var(--hot-magenta);
+  color: var(--hot-magenta);
+  box-shadow: var(--glow-magenta);
+  text-shadow: var(--glow-magenta);
+}
+.btn-neon-magenta:hover {
+  background: #FF00FF20;
+  box-shadow: 0 0 20px #FF00FF, 0 0 40px #FF00FF, 0 0 60px #FF00FF88;
+}
+
+.btn-mega {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  padding: 18px 48px;
+  animation: pulseScale 1.5s ease-in-out infinite, borderGlowCycle 3s linear infinite;
+  border-width: 3px;
+}
+
+/* ============================================
+   SCREEN CONTAINER
+   ============================================ */
+.screen {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+/* Mute button */
+.mute-btn {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  background: #0a0a1acc;
+  border: 1px solid #39FF1466;
+  color: var(--neon-green);
+  font-size: 1.3rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.mute-btn:hover {
+  border-color: var(--neon-green);
+  box-shadow: var(--glow-green);
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
+/* ============================================
+   SCROLLBAR HIDE (for game screens)
+   ============================================ */
+::-webkit-scrollbar { display: none; }
