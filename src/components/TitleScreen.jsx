@@ -59,10 +59,9 @@ export default function TitleScreen({ onStart, onSkip, ensureAudio }) {
         playClick();
       }
     } catch {
-      // If API is unreachable (dev mode), allow through
-      setVerifyState(VERIFY_STATES.APPROVED);
-      playPowerUp();
-      setTimeout(() => onStart(name), 400);
+      setVerifyState(VERIFY_STATES.NEED_FULLNAME);
+      setErrorMsg('Could not verify — please enter your full name');
+      playClick();
     }
   };
 
@@ -97,10 +96,9 @@ export default function TitleScreen({ onStart, onSkip, ensureAudio }) {
         setErrorMsg("Sorry, you're not on the guest list!");
       }
     } catch {
-      // Fallback if API unreachable
-      setVerifyState(VERIFY_STATES.APPROVED);
-      playPowerUp();
-      setTimeout(() => onStart(agentName.trim() || f), 400);
+      setVerifyState(VERIFY_STATES.DENIED);
+      setErrorMsg('Could not verify — please try again');
+      playError();
     }
   };
 
