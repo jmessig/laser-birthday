@@ -47,16 +47,22 @@ if (Test-Path $InstallDir) {
     New-Item -ItemType Directory -Path $InstallDir -Force | Out-Null
 }
 
-# Copy everything except node_modules, .git, .env
-$exclude = @("node_modules", ".git", ".env", "install.ps1")
-Get-ChildItem -Path $ScriptDir -Exclude $exclude | ForEach-Object {
-    if ($_.PSIsContainer) {
-        Copy-Item -Path $_.FullName -Destination (Join-Path $InstallDir $_.Name) -Recurse -Force
-    } else {
-        Copy-Item -Path $_.FullName -Destination $InstallDir -Force
+# Copy files (skip if already running from install dir)
+$srcResolved = (Resolve-Path $ScriptDir).Path.TrimEnd('\')
+$dstResolved = (Resolve-Path $InstallDir).Path.TrimEnd('\')
+if ($srcResolved -eq $dstResolved) {
+    Write-Host "[OK] Already running from install directory, skipping copy" -ForegroundColor Green
+} else {
+    $exclude = @("node_modules", ".git", ".env", "install.ps1")
+    Get-ChildItem -Path $ScriptDir -Exclude $exclude | ForEach-Object {
+        if ($_.PSIsContainer) {
+            Copy-Item -Path $_.FullName -Destination (Join-Path $InstallDir $_.Name) -Recurse -Force
+        } else {
+            Copy-Item -Path $_.FullName -Destination $InstallDir -Force
+        }
     }
+    Write-Host "[OK] Files copied to $InstallDir" -ForegroundColor Green
 }
-Write-Host "[OK] Files copied to $InstallDir" -ForegroundColor Green
 
 # --- Install production dependencies ---
 Write-Host "[INFO] Installing dependencies..." -ForegroundColor Yellow
