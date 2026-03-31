@@ -116,7 +116,7 @@ Write-Host "  3. Ensure cloudflared routes birthday.coltonessig.com -> localhost
 Write-Host "  4. Restart after .env changes: pm2 restart laser-birthday" -ForegroundColor White
 Write-Host ""
 Write-Host "USEFUL COMMANDS:" -ForegroundColor Cyan
-Write-Host "  pm2 logs laser-birthday     — view logs" -ForegroundColor White
-Write-Host "  pm2 restart laser-birthday   — restart after changes" -ForegroundColor White
-Write-Host "  pm2 stop laser-birthday      — stop the server" -ForegroundColor White
+Write-Host "  pm2 logs laser-birthday      - view logs" -ForegroundColor White
+Write-Host "  pm2 restart laser-birthday   - restart after changes" -ForegroundColor White
+Write-Host "  pm2 stop laser-birthday      - stop the server" -ForegroundColor White
 Write-Host ""
