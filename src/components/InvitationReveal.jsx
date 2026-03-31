@@ -259,6 +259,20 @@ export default function InvitationReveal({ agentName }) {
             position: 'relative',
           }}>
             <InvLine show={revealLines >= 1}>
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
+                <img
+                  src="/colton.png"
+                  alt="Colton"
+                  style={{
+                    width: 'clamp(80px, 20vw, 120px)',
+                    height: 'clamp(80px, 20vw, 120px)',
+                    borderRadius: '50%',
+                    border: '3px solid var(--neon-green)',
+                    boxShadow: '0 0 15px #39FF1466, 0 0 30px #39FF1422',
+                    objectFit: 'cover',
+                  }}
+                />
+              </div>
               <span className="anim-rainbow" style={{
                 fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(0.8rem, 2.5vw, 1.2rem)',
