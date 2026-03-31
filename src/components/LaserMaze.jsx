@@ -32,13 +32,13 @@ const LASERS = [
   { x1: 1, y1: 5, x2: 4, y2: 5, horizontal: true, phase: 0 },
   { x1: 7, y1: 3, x2: 9, y2: 3, horizontal: true, phase: 0.4 },
   { x1: 3, y1: 7, x2: 5, y2: 7, horizontal: true, phase: 0.2 },
-  { x1: 7, y1: 9, x2: 9, y2: 9, horizontal: true, phase: 0.6 },
+  { x1: 7, y1: 9, x2: 8, y2: 9, horizontal: true, phase: 0.6 },
   { x1: 1, y1: 9, x2: 4, y2: 9, horizontal: true, phase: 0.8 },
   // Vertical beams
   { x1: 5, y1: 1, x2: 5, y2: 3, horizontal: false, phase: 0.5 },
   { x1: 10, y1: 1, x2: 10, y2: 4, horizontal: false, phase: 0.3 },
   { x1: 3, y1: 5, x2: 3, y2: 7, horizontal: false, phase: 0.7 },
-  { x1: 10, y1: 7, x2: 10, y2: 9, horizontal: false, phase: 0.1 },
+  { x1: 10, y1: 7, x2: 10, y2: 8, horizontal: false, phase: 0.1 },
   { x1: 7, y1: 5, x2: 7, y2: 7, horizontal: false, phase: 0.9 },
 ];
 
