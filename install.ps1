@@ -27,7 +27,8 @@ try {
 }
 
 # --- Check for PM2 ---
-$pm2Path = & where.exe pm2 2>$null
+$pm2Path = $null
+try { $pm2Path = & where.exe pm2 2>&1 | Where-Object { $_ -notmatch "INFO:" } } catch {}
 if (-not $pm2Path) {
     Write-Host "[INFO] Installing PM2 globally..." -ForegroundColor Yellow
     & npm install -g pm2
