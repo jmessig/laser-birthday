@@ -20,23 +20,23 @@ export const PARTY_CONFIG = {
 // GAME SETTINGS
 // ============================================
 export const GAME_CONFIG = {
-  // Target Practice — tighter timing, fewer targets visible, need more hits
-  targetPracticeDuration: 25,     // seconds (shorter!)
-  targetHitsToWin: 15,            // need 15 hits — gotta be fast
-  targetVisibleTime: [1200, 2200], // ms range (faster disappear)
-  maxVisibleTargets: 3,           // more on screen at once
-  targetSpawnDelay: [250, 500],   // ms between spawns (faster)
+  // Target Practice
+  targetPracticeDuration: 30,     // seconds
+  targetHitsToWin: 10,            // need 10 hits
+  targetVisibleTime: [1500, 2800], // ms range
+  maxVisibleTargets: 3,
+  targetSpawnDelay: [250, 500],   // ms between spawns
   autoPassAfterFailures: 3,
 
-  // Code Cracker — more rounds, longer sequences
-  simonRounds: 5,
-  simonSequenceLengths: [2, 3, 4, 5, 6],
-  simonFlashDuration: 700,       // ms per flash (slightly faster)
+  // Code Cracker
+  simonRounds: 4,
+  simonSequenceLengths: [2, 3, 4, 5],
+  simonFlashDuration: 850,       // ms per flash
 
   // Laser Maze
   mazeSize: 12,
-  laserOnTime: 1500,             // ms
-  laserOffTime: 1500,            // ms
+  laserOnTime: 1200,             // ms
+  laserOffTime: 2000,            // ms
   laserWarningTime: 500,         // ms before activation
 };
 
