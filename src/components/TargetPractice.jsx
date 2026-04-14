@@ -276,6 +276,12 @@ function TargetPracticeGame({ onComplete, onBack, failCount, onFail, onRetry, on
         playExplosion();
         s.particles.addMany(burstExplosion(t.x, t.y, '#FF073A', 15));
         s.floatingTexts.push({ x: t.x, y: t.y - 20, text: '+1', life: 1 });
+        // Early win when target hit count reached
+        if (s.score >= GAME_CONFIG.targetHitsToWin) {
+          s.gameState = STATES.WIN;
+          playVictory();
+          setGameState(STATES.WIN);
+        }
         break;
       }
     }

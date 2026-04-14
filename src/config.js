@@ -29,8 +29,8 @@ export const GAME_CONFIG = {
   autoPassAfterFailures: 3,
 
   // Code Cracker
-  simonRounds: 4,
-  simonSequenceLengths: [2, 3, 4, 5],
+  simonRounds: 3,
+  simonSequenceLengths: [2, 3, 4],
   simonFlashDuration: 850,       // ms per flash
 
   // Laser Maze
