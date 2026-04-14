@@ -455,8 +455,20 @@ function DPad({ onMove }) {
     WebkitUserSelect: 'none',
   };
 
-  const handlePress = (dx, dy) => (e) => {
+  const touchedRef = useRef(false);
+
+  const handleTouch = (dx, dy) => (e) => {
     e.preventDefault();
+    touchedRef.current = true;
+    onMove(dx, dy);
+  };
+
+  const handleClick = (dx, dy) => () => {
+    // Skip if this was already handled by touch
+    if (touchedRef.current) {
+      touchedRef.current = false;
+      return;
+    }
     onMove(dx, dy);
   };
 
@@ -470,13 +482,13 @@ function DPad({ onMove }) {
       placeItems: 'center',
     }}>
       <div />
-      <button style={btnStyle} onTouchStart={handlePress(0, -1)} onClick={() => onMove(0, -1)}>{'\u25B2'}</button>
+      <button style={btnStyle} onTouchStart={handleTouch(0, -1)} onClick={handleClick(0, -1)}>{'\u25B2'}</button>
       <div />
-      <button style={btnStyle} onTouchStart={handlePress(-1, 0)} onClick={() => onMove(-1, 0)}>{'\u25C0'}</button>
+      <button style={btnStyle} onTouchStart={handleTouch(-1, 0)} onClick={handleClick(-1, 0)}>{'\u25C0'}</button>
       <div style={{ width: 'clamp(50px, 12vw, 64px)', height: 'clamp(50px, 12vw, 64px)' }} />
-      <button style={btnStyle} onTouchStart={handlePress(1, 0)} onClick={() => onMove(1, 0)}>{'\u25B6'}</button>
+      <button style={btnStyle} onTouchStart={handleTouch(1, 0)} onClick={handleClick(1, 0)}>{'\u25B6'}</button>
       <div />
-      <button style={btnStyle} onTouchStart={handlePress(0, 1)} onClick={() => onMove(0, 1)}>{'\u25BC'}</button>
+      <button style={btnStyle} onTouchStart={handleTouch(0, 1)} onClick={handleClick(0, 1)}>{'\u25BC'}</button>
       <div />
     </div>
   );
